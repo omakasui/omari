@@ -125,6 +125,7 @@ xdg-desktop-portal
 xdg-desktop-portal-gtk
 xdg-terminal-exec
 xwayland
+xwayland-satellite
 
 yaru-theme-gtk
 yaru-theme-icon
