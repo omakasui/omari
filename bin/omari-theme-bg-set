@@ -18,6 +18,13 @@ BLURRED_BACKGROUND="$HOME/.config/omari/current/background-blurred.jpg"
 convert "$BACKGROUND" -blur 0x15 "$BLURRED_BACKGROUND"
 
 # Kill existing swaybg and start new one
+niri msg action do-screen-transition
 pkill -x swaybg
 setsid uwsm-app -- swaybg -i "$CURRENT_BACKGROUND_LINK" -m fill >/dev/null 2>&1 &
+
+# Create a blurred version of the background
+BLURRED_BACKGROUND="$HOME/.config/omari/current/background-blurred.jpg"
+convert "$BACKGROUND" -blur 0x15 "$BLURRED_BACKGROUND"
+
 setsid uwsm-app -- swaybg -i "$BLURRED_BACKGROUND" -m fill -n backdrop >/dev/null 2>&1 &
+
