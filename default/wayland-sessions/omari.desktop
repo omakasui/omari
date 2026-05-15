@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Omari (Niri uwsm)
+Comment=Omari Niri session managed by uwsm
+Exec=uwsm start -g -1 -e -D Niri niri.service
+TryExec=uwsm
+Type=Application
