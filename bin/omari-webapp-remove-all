@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Remove all web apps installed via omari-webapp-install.
-# Identifies web apps by their Exec pattern (omari-launch-webapp or omari-webapp-handler).
+# omari:summary=Remove all web apps installed via omari-webapp-install.
 
 set -e
 
@@ -33,5 +32,7 @@ done
 if command -v update-desktop-database &>/dev/null; then
   update-desktop-database "$APP_DIR" &>/dev/null || true
 fi
+
+omari-restart-walker
 
 echo "Web apps removed successfully."

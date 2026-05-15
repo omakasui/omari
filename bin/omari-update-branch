@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# omari:summary=Switch Omari branches and update from the selected branch.
+# omari:args=<branch>
+
 set -e
 
 if (($# == 0)); then

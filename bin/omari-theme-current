@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Display the name of the current Omari theme in a user-friendly format.
+# omari:summary=Show current theme.
+# omari:examples=omari theme current
 
 THEME_NAME_PATH="$HOME/.config/omari/current/theme.name"
 

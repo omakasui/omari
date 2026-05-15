@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Sets the specified image as the current background
+# omari:summary=Set the current background image.
+# omari:args=<path-to-image> [zoom|center|stretch|fill|fit|spanned]
+# omari:examples=omari theme bg set ~/Pictures/background.png
 
 if [[ -z $1 ]]; then
   echo "Usage: omari-theme-bg-set <path-to-image>" >&2

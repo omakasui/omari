@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Manage persistent state files for Omari toggles and settings.
-# Usage: omari-state <set|clear> <state-name-or-pattern>
-# Used to track whether features like suspend, idle lock, etc are enabled or disabled.
+# omari:summary=Manage persistent state files for Omari toggles and settings.
+# omari:args=<set|clear> <state-name-or-pattern>
+# omari:hidden=true
 
 STATE_DIR="$HOME/.local/state/omari"
 mkdir -p "$STATE_DIR"

@@ -1,9 +1,10 @@
 #!/bin/bash
 
-# Remove one of the supported fonts. Usually called via Remove > Styles > Fonts > * in the Omari Menu.
+# omari:summary=Remove one of the supported fonts.
+# omari:args=<jetbrains-mono|iafonts|cascadia-mono|mscore>
 
 if [[ -z "$1" ]]; then
-  echo "Usage: omari-remove-font <font>" >&2
+  echo "Usage: omadeb-remove-font <font>" >&2
   exit 1
 fi
 
@@ -22,7 +23,7 @@ mscore)
   omari-pkg-remove ttf-mscorefonts-installer
   ;;
 *)
-  echo "Usage: omari-remove-font <font>" >&2
+  echo "Usage: omadeb-remove-font <font>" >&2
   exit 1
   ;;
 esac

@@ -1,5 +1,5 @@
 #!/bin/bash
 
-# Reload mako configuration (used by the Omari theme switching).
+# omari:summary=Reload mako configuration (used by the omari theme switching).
 
 makoctl reload

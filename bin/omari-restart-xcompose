@@ -1,5 +1,5 @@
 #!/bin/bash
 
-# Restart the XCompose input method service (fcitx5) to apply new compose key settings.
+# omari:summary=Restart the IBus input method service to apply XCompose configuration changes.
 
 omari-restart-app fcitx5 --disable notificationitem

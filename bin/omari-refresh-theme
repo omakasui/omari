@@ -1,13 +1,9 @@
 #!/bin/bash
 
-# Overwrite the user config for themes with the Omari defaults.
+# omari:summary=Reapply the current Omari theme.
 
-# Add missing theme links
-for f in ~/.local/share/omari/themes/*; do
-  if [[ ! -e ~/.config/omari/themes/$(basename "$f") ]]; then
-    echo -e "\e[32mCreating symlink for $(basename "$f")\e[0m"
-    ln -s "$f" ~/.config/omari/themes/
-  fi
-done
+THEME_NAME_PATH="$HOME/.config/omari/current/theme.name"
 
-
+if [[ -f $THEME_NAME_PATH ]]; then
+  OMARI_THEME_SKIP_BACKGROUND=1 omari-theme-set "$(cat $THEME_NAME_PATH)"
+fi

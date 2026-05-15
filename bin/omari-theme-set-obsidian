@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Sync Omari theme to all Obsidian vaults
+# omari:summary=Sync Omari theme to all Obsidian vaults.
+# omari:hidden=true
 
 CURRENT_THEME_DIR="$HOME/.config/omari/current/theme"
 
@@ -19,7 +20,7 @@ jq -r '.vaults | values[].path' ~/.config/obsidian/obsidian.json 2>/dev/null | w
   "minAppVersion": "0.16.0",
   "description": "Automatically syncs with your current Omari system theme colors and fonts",
   "author": "Omari",
-  "authorUrl": "https://omari.omakasui.org"
+  "authorUrl": "https://omari.org"
 }
 EOF
 

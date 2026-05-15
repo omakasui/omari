@@ -1,8 +1,6 @@
 #!/bin/bash
 
-# Update all installed Omari themes by pulling the latest changes from their git repositories.
-
-omari-refresh-theme
+# omari:summary=Update user-installed git themes.
 
 for dir in ~/.config/omari/themes/*/; do
   if [[ -d $dir ]] && [[ ! -L ${dir%/} ]] && [[ -d $dir/.git ]]; then

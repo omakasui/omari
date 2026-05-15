@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# omari-theme-install: Install a new theme from a git repo for Omari/Omakasui.
-# Usage: omari-theme-install <git-repo-url>
+# omari:summary=Install a theme from a git repository.
+# omari:args=[git-repo-url]
+# omari:examples=omari theme install https://github.com/example/omari-example-theme.git
 
 if [[ -z $1 ]]; then
   echo -e "\e[32mSee https://omakasui.org/themes\n\e[0m"
@@ -15,7 +16,11 @@ if [[ -z $REPO_URL ]]; then
 fi
 
 THEMES_DIR="$HOME/.config/omari/themes"
-THEME_NAME=$(basename "$REPO_URL" .git | sed -E 's/^(omari|omakasui)-//; s/-theme$//')
+
+# Strip user@host: prefix from scp-style SSH URLs so basename sees just the path
+REPO_PATH="$REPO_URL"
+[[ $REPO_PATH != *"://"* && $REPO_PATH == *:*/* ]] && REPO_PATH="${REPO_PATH#*:}"
+THEME_NAME=$(basename "$REPO_URL" .git | sed -E 's/^(omari|omakasui)-//; s/-theme$//' | tr '[:upper:]' '[:lower:]')
 THEME_PATH="$THEMES_DIR/$THEME_NAME"
 
 # Remove existing theme if present

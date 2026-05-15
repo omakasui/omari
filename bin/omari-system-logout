@@ -1,7 +1,11 @@
 #!/bin/bash
 
-# Log out the current user session after clearing the logout-required state.
+# omari:summary=Log out after closing application windows
+# omari:examples=omari logout | omari system logout
+# omari:aliases=omari logout
 
-omari-state clear logout-required
+nohup bash -c "sleep 2 && uwsm stop" >/dev/null 2>&1 &
+
+# Now close all windows
+omari-niri-window-close-all
 sleep 1 # Allow apps like Chrome to shutdown correctly
-gnome-session-quit --logout --no-prompt

@@ -1,5 +1,5 @@
 #!/bin/bash
 
-# Print the name of the currently focused Niri monitor.
+# omari:summary=Print the name of the currently focused Hyprland monitor.
 
 niri msg --json monitors | jq -r '.[] | select(.focused) | .name'

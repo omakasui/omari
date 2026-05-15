@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo
+# omari:summary=Prompt for required reboot or service restarts after updates.
 
 if [[ -f $HOME/.local/state/omari/reboot-required ]]; then
   echo

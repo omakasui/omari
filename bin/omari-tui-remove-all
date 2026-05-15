@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Remove all TUIs installed via omari-tui-install.
-# Identifies TUIs by their Exec pattern (xdg-terminal-exec).
+# omari:summary=Remove all TUIs installed via omari-tui-install.
 
 set -e
 

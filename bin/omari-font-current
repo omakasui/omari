@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Returns the name of the current monospace font being used by extracting it from the terminal config.
-# This can be changed using omari-font-set.
+# omari:summary=Show current monospace font
+# omari:examples=omari font current
 
 grep -oP 'font-family:\s*["'\'']?\K[^;"'\'']+' ~/.config/waybar/style.css | head -n1

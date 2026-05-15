@@ -1,12 +1,14 @@
 #!/bin/bash
 
-# Shutdown command that first closes all application windows (thus giving them a chance to save state).
-# This is particularly helpful for applications like Chromium that otherwise won't shutdown cleanly.
+# omari:summary=Shut down after closing application windows
+# omari:examples=omari shutdown | omari system shutdown
+# omari:aliases=omari shutdown
 
 omari-state clear re*-required
 
 # Schedule the shutdown to happen after closing windows (detached from terminal)
 nohup bash -c "sleep 2 && systemctl poweroff --no-wall" >/dev/null 2>&1 &
 
+# Now close all windows
+omari-niri-window-close-all
 sleep 1 # Allow apps like Chrome to shutdown correctly
-systemctl poweroff --no-wall

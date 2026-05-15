@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# omari:summary=Close all open windows
+
 # Close all open windows
 niri msg --json windows |
   jq -r '

@@ -1,9 +1,9 @@
 #!/bin/bash
 
-set -e
+# omari:summary=Remove web app desktop launchers.
+# omari:args=[name...]
 
-# omari-app-folder-remove: Remove a .desktop file from a specified app folder.
-# Usage: omari-app-folder-remove <desktop_file.desktop> <folder_name>
+set -e
 
 ICON_DIR="$HOME/.local/share/applications/icons"
 DESKTOP_DIR="$HOME/.local/share/applications/"
@@ -45,3 +45,5 @@ for APP_NAME in "${APP_NAMES[@]}"; do
   rm -rf "$HOME/.config/omari/webapp/$(echo "$APP_NAME" | tr ' ' '-' | tr '[:upper:]' '[:lower:]')"
   echo "Removed $APP_NAME"
 done
+
+omari-restart-walker

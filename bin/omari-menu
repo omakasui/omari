@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Launch the Omari Menu or takes a parameter to jump straight to a submenu.
+# omari:summary=Launch the Omari Menu or takes a parameter to jump straight to a submenu.
 
 export PATH="$HOME/.local/share/omari/bin:$PATH"
 
@@ -54,16 +54,12 @@ present_terminal() {
 }
 
 open_in_editor() {
-  notify-send -u low "Editing config file" "$1"
+  omari-notification-send -g "󰂮" -u low "Editing config file" "$1"
   omari-launch-editor "$1"
 }
 
 install() {
   present_terminal "echo 'Installing $1...'; omari-pkg-add $2"
-}
-
-install_app() {
-  present_terminal "echo 'Installing $1...'; omari-app-install $2"
 }
 
 install_font() {
@@ -78,17 +74,14 @@ remove() {
   present_terminal "echo 'Removing $1...'; omari-pkg-drop $2"
 }
 
-remove_app() {
-  present_terminal "echo 'Removing $1...'; omari-app-remove $2"
-}
-
 remove_font() {
   present_terminal "echo 'Removing $1...'; omari-remove-font $2"
 }
 
 show_learn_menu() {
-  case $(menu "Learn" "  Keybindings\n  Omari\n  Debian\n  Niri\n  Neovim\n󱆃  Bash") in
+  case $(menu "Learn" "  Keybindings\n  Tmux keybindings\n  Omari\n  Debian\n  Niri\n  Neovim\n󱆃  Bash") in
   *Keybindings*) omari-launch-webapp "https://omari.omakasui.org/manual/essentials/hotkeys" "Omari Keybindings" ;;
+  *Tmux*) omari-menu-tmux-keybindings ;;
   *Omari*) omari-launch-webapp "https://omari.omakasui.org/manual" "Omari" ;;
   *Debian*) omari-launch-webapp "https://www.debian.org/doc/" "Debian" ;;
   *Niri*) omari-launch-webapp "https://niri-wm.github.io/niri/" "Niri" ;;
@@ -99,18 +92,56 @@ show_learn_menu() {
 }
 
 show_trigger_menu() {
-  case $(menu "Trigger" "  Share\n󰔎  Toggle") in
+  case $(menu "Trigger" "󰔛  Reminder\n󰧸  Transcode\n  Share\n󰔎  Toggle") in
+  *Reminder*) show_reminder_menu ;;
+  *Transcode*) omari-transcode || back_to show_trigger_menu ;;
   *Share*) show_share_menu ;;
   *Toggle*) show_toggle_menu ;;
   *) show_main_menu ;;
   esac
 }
 
+show_reminder_menu() {
+  case $(menu "Reminder" "󰔛  Set one\n󰔛  Show all\n󰔛  Clear all") in
+  *Set*) show_custom_reminder_input ;;
+  *"Show all"*) omari-reminder show ;;
+  *"Clear all"*) omari-reminder clear ;;
+  *) back_to show_trigger_menu ;;
+  esac
+}
+
+show_custom_reminder_input() {
+  local minutes
+  minutes=$(omari-menu-input "Remind in minutes")
+
+  if [[ $minutes =~ ^[0-9]+$ ]] && ((minutes > 0)); then
+    show_reminder_message_input "$minutes"
+  elif [[ -n $minutes ]]; then
+    omari-notification-send -g "󰔛" "Invalid reminder" "Enter the number of minutes" -u critical
+    show_custom_reminder_input
+  else
+    back_to show_reminder_menu
+  fi
+}
+
+show_reminder_message_input() {
+  local minutes="$1"
+  local message
+  message=$(omari-menu-input "Reminder message")
+
+  if [[ -n $message ]]; then
+    omari-reminder "$minutes" "$message"
+  else
+    omari-reminder "$minutes"
+  fi
+}
+
 show_share_menu() {
-  case $(menu "Share" "  Clipboard\n  File \n  Folder") in
-  *Clipboard*) omari-cmd-share clipboard ;;
-  *File*) terminal bash -c "omari-cmd-share file" ;;
-  *Folder*) terminal bash -c "omari-cmd-share folder" ;;
+  case $(menu "Share" "  Clipboard\n  File \n  Folder\n󰥦  Receive") in
+  *Receive*) localsend_app ;;
+  *Clipboard*) omari-menu-share clipboard ;;
+  *File*) terminal bash -c "omari-menu-share file" ;;
+  *Folder*) terminal bash -c "omari-menu-share folder" ;;
   *) back_to show_trigger_menu ;;
   esac
 }
@@ -122,12 +153,13 @@ show_toggle_menu() {
   esac
 }
 
-
 show_style_menu() {
-  case $(menu "Style" "󰸌  Theme\n  Font\n  Background") in
+  case $(menu "Style" "󰸌  Theme\n󱣴  Plymouth\n  Font\n  Background\n  About") in
   *Theme*) show_theme_menu ;;
+  *Plymouth*) omari-launch-walker -m menus:omariunlocks --width 800 --minheight 400 ;;
   *Font*) show_font_menu ;;
   *Background*) show_background_menu ;;
+  *About*) show_about_menu ;;
   *) show_main_menu ;;
   esac
 }
@@ -137,11 +169,19 @@ show_theme_menu() {
 }
 
 show_font_menu() {
-  theme=$(menu "Font" "$(omari-font-list)" "--width 350" "$(omari-font-current)")
-  if [[ $theme == "CNCLD" || -z $theme ]]; then
+  case $(menu "Font" "  Family\n󰧴  Size") in
+  *Family*) show_font_family_menu ;;
+  *Size*) present_terminal omari-font-size-set ;;
+  *) show_main_menu ;;
+  esac
+}
+
+show_font_family_menu() {
+  font=$(menu "Font" "$(omari-font-list)" "--width 350" "$(omari-font-current)")
+  if [[ $font == "CNCLD" || -z $font ]]; then
     back_to show_style_menu
   else
-    omari-font-set "$theme"
+    omari-font-set "$font"
   fi
 }
 
@@ -149,13 +189,23 @@ show_background_menu() {
   omari-launch-walker -m menus:omariBackgroundSelector --width 800 --minheight 400
 }
 
+show_about_menu() {
+  case $(menu "About" "  Edit Text\n  Set From Image\n  Restore Default") in
+  *Text*) omari-branding-about text ;;
+  *Image*) omari-branding-about image ;;
+  *Default*) omari-branding-about reset ;;
+  *) show_style_menu ;;
+  esac
+}
+
 show_setup_menu() {
-  case $(menu "Setup" "  Audio\n  Wifi\n󰂯  Bluetooth\n󰤆  System Sleep\n  Keybindings") in
-  *Audio*) omari-launch-audio ;;
-  *Wifi*) omari-launch-wifi ;;
-  *Bluetooth*) omari-launch-bluetooth ;;
+  case $(menu "Setup" "󰤆  System Sleep\n  Folders\n  Keybindings\n󰓎  Defaults\n󰱔  DNS\n  Config") in
   *System*) show_setup_system_menu ;;
-  *Keybindings*) open_in_editor ~/.config/niri/bindings.kdl ;;
+  *Folders*) show_setup_folders_menu ;;
+  *Keybindings*) show_setup_keybindings_menu ;;
+  *Defaults*) show_setup_default_menu ;;
+  *DNS*) present_terminal omari-setup-dns ;;
+  *Config*) show_setup_config_menu ;;
   *) show_main_menu ;;
   esac
 }
@@ -163,7 +213,7 @@ show_setup_menu() {
 show_setup_system_menu() {
   local options=""
 
- if [[ -f ~/.local/state/omari/toggles/suspend-off ]]; then
+ if omari-toggle-enable suspend-off; then
     options="$options󰒲  Enable Suspend"
   else
     options="$options󰒲  Disable Suspend"
@@ -171,6 +221,124 @@ show_setup_system_menu() {
 
   case $(menu "System" "$options") in
   *Suspend*) omari-toggle-suspend ;;
+  *) show_setup_menu ;;
+  esac
+}
+
+show_setup_folders_menu() {
+  case $(menu "Folders" "󰮝  Add\n󰮞  Remove") in
+  *Add*) present_terminal omari-gnome-grid-folder-add ;;
+  *Remove*) present_terminal omari-gnome-grid-folder-drop ;;
+  *) show_setup_menu ;;
+  esac
+}
+
+show_setup_keybindings_menu() {
+  case $(menu "Keybindings" "   Add\n   Remove") in
+  *Add*) present_terminal omari-gnome-keybinding-add ;;
+  *Remove*) present_terminal omari-gnome-keybinding-drop ;;
+  *) show_setup_menu ;;
+  esac
+}
+
+show_setup_default_menu() {
+  case $(menu "Default" "  Browser\n  Terminal\n  Editor") in
+  *Browser*) show_setup_default_browser_menu ;;
+  *Terminal*) show_setup_default_terminal_menu ;;
+  *Editor*) show_setup_default_editor_menu ;;
+  *) show_setup_menu ;;
+  esac
+}
+
+browser_desktop_exists() {
+  [[ -f ~/.local/share/applications/$1 || -f ~/.nix-profile/share/applications/$1 || -f /usr/share/applications/$1 ]]
+}
+
+show_setup_default_browser_menu() {
+  local options=""
+  browser_desktop_exists chromium.desktop && options="$options  Chromium"
+  browser_desktop_exists google-chrome.desktop && options="${options:+$options\n}󰊯  Chrome"
+  browser_desktop_exists brave-browser.desktop && options="${options:+$options\n}󰖟  Brave"
+  browser_desktop_exists microsoft-edge.desktop && options="${options:+$options\n}󰇩  Edge"
+  browser_desktop_exists firefox.desktop && options="${options:+$options\n}󰈹  Firefox"
+  browser_desktop_exists zen.desktop && options="${options:+$options\n}󰖟  Zen"
+
+  local current=""
+  case "$(omari-default-browser)" in
+  chromium) current="  Chromium" ;;
+  chrome) current="󰊯  Chrome" ;;
+  brave) current="󰖟  Brave" ;;
+  edge) current="󰇩  Edge" ;;
+  firefox) current="󰈹  Firefox" ;;
+  zen) current="󰖟  Zen" ;;
+  esac
+
+  case $(menu "Default Browser" "$options" "" "$current") in
+  *Chromium*) omari-default-browser chromium ;;
+  *Chrome*) omari-default-browser chrome ;;
+  *Brave*) omari-default-browser brave ;;
+  *Edge*) omari-default-browser edge ;;
+  *Firefox*) omari-default-browser firefox ;;
+  *Zen*) omari-default-browser zen ;;
+  *) show_setup_default_menu ;;
+  esac
+}
+
+show_setup_default_terminal_menu() {
+  local options=""
+  omari-cmd-present alacritty && options="$options  Alacritty"
+  omari-cmd-present ghostty && options="${options:+$options\n}  Ghostty"
+  omari-cmd-present kitty && options="${options:+$options\n}  Kitty"
+
+  local current=""
+  case "$(omari-default-terminal)" in
+  alacritty) current="  Alacritty" ;;
+  ghostty) current="  Ghostty" ;;
+  kitty) current="  Kitty" ;;
+  esac
+
+  case $(menu "Default Terminal" "$options" "" "$current") in
+  *Alacritty*) omari-default-terminal alacritty ;;
+  *Ghostty*) omari-default-terminal ghostty ;;
+  *Kitty*) omari-default-terminal kitty ;;
+  *) show_setup_default_menu ;;
+  esac
+}
+
+show_setup_default_editor_menu() {
+  local options=""
+  omari-cmd-present nvim && options="$options  Neovim"
+  omari-cmd-present code && options="${options:+$options\n}  VSCode"
+  omari-cmd-present cursor && options="${options:+$options\n}  Cursor"
+  omari-cmd-present zeditor && options="${options:+$options\n}  Zed"
+  omari-cmd-present vim && options="${options:+$options\n}  Vim"
+  omari-cmd-present emacs && options="${options:+$options\n}  Emacs"
+
+  local current=""
+  case "$(omari-default-editor)" in
+  nvim) current="  Neovim" ;;
+  code) current="  VSCode" ;;
+  cursor) current="  Cursor" ;;
+  zed | zeditor) current="  Zed" ;;
+  vim) current="  Vim" ;;
+  emacs) current="  Emacs" ;;
+  esac
+
+  case $(menu "Default Editor" "$options" "" "$current") in
+  *Neovim*) omari-default-editor nvim ;;
+  *VSCode*) omari-default-editor code ;;
+  *Cursor*) omari-default-editor cursor ;;
+  *Zed*) omari-default-editor zed ;;
+  *Vim*) omari-default-editor vim ;;
+  *Emacs*) omari-default-editor emacs ;;
+  *) show_setup_default_menu ;;
+  esac
+}
+
+show_setup_config_menu() {
+  case $(menu "Setup" "󰌧  Walker\n󰞅  XCompose") in
+  *Walker*) open_in_editor ~/.config/walker/config.toml && omari-restart-walker ;;
+  *XCompose*) open_in_editor ~/.XCompose && omari-restart-xcompose ;;
   *) show_setup_menu ;;
   esac
 }
@@ -194,30 +362,30 @@ show_install_menu() {
 }
 
 show_install_service_menu() {
-  case $(menu "Install" "  1password\n  Bitwarden\n  Discord\n  Dropbox\n  LibreOffice\n  LocalSend\n  ObsStudio\n  Obsidian\n  Signal\n  Spotify\n  Typora\n  Tailscale\n  Zoom") in
-  *1password*) install_app "1password" "1password" ;;
-  *Bitwarden*) install_app "Bitwarden" "bitwarden" ;;
-  *Discord*) install_app "Discord" "discord" ;;
-  *Dropbox*) install_app "Dropbox" "dropbox" ;;
+  case $(menu "Install" "  1password\n  Bitwarden\n  Discord\n  Dropbox\n  LibreOffice\n  LocalSend\n  ObsStudio\n  Obsidian\n  Signal\n  Spotify\n  Typora\n  Tailscale") in
+  *1password*) present_terminal omari-install-1password ;;
+  *Bitwarden*) install "Bitwarden" "bitwarden" ;;
+  *Discord*) present_terminal omari-install-discord ;;
+  *Dropbox*) install "Dropbox" "nautilus-dropbox" ;;
   *LibreOffice*) install "LibreOffice" "libreoffice" ;;
   *LocalSend*) install "LocalSend" "localsend" ;;
   *ObsStudio*) install "ObsStudio" "obs-studio" ;;
-  *Obsidian*) install_app "Obsidian" "obsidian" ;;
-  *Signal*) install_app "Signal" "signal" ;;
-  *Spotify*) install_app "Spotify" "spotify" ;;
-  *Typora*) install_app "Typora" "typora" ;;
-  *Tailscale*) install_app "Tailscale" "tailscale" ;;
-  *Zoom*) install_app "Zoom" "zoom" ;;
+  *Obsidian*) install "Obsidian" "obsidian" ;;
+  *Signal*) present_terminal omari-install-signal ;;
+  *Spotify*) present_terminal omari-install-spotify ;;
+  *Typora*) present_terminal omari-install-typora ;;
+  *Tailscale*) present_terminal omari-install-tailscale ;;
   *) show_install_menu ;;
   esac
 }
 
 show_install_browser_menu() {
-  case $(menu "Install" "  Brave\n  Chromium\n  Firefox\n  Zen") in
-  *Brave*) install_app "Brave" "brave" ;;
-  *Chromium*) install "Chromium" "chromium" ;;
-  *Firefox*) install "Firefox" "firefox-esr" ;;
-  *Zen*) install "Zen Browser" "zen-browser" ;;
+  case $(menu "Install" "  Chrome\n  Edge\n  Brave\n  Firefox\n󰖟  Zen") in
+  *Chrome*) present_terminal "omari-install-browser chrome" ;;
+  *Edge*) present_terminal "omari-install-browser edge" ;;
+  *Brave*) present_terminal "omari-install-browser brave" ;;
+  *Firefox*) present_terminal "omari-install-browser firefox" ;;
+  *Zen*) present_terminal "omari-install-browser zen" ;;
   *) show_install_menu ;;
   esac
 }
@@ -252,10 +420,8 @@ show_install_font_menu() {
 }
 
 show_install_development_menu() {
-  case $(menu "Install" "  Docker\n󱘲  Databases\n󰊢  Git\n󰫏  Ruby on Rails\n  JavaScript\n  Go\n  PHP\n  Python\n  Elixir\n  Zig\n  Rust\n  Java\n  .NET\n  OCaml\n  Clojure\n  Scala") in
-  *Docker*) install "Docker" "docker" ;;
+  case $(menu "Install" "󱘲  Databases\n󰫏  Ruby on Rails\n  JavaScript\n  Go\n  PHP\n  Python\n  Elixir\n  Zig\n  Rust\n  Java\n  .NET\n  OCaml\n  Clojure\n  Scala") in
   *Databases*) show_install_databases_menu ;;
-  *Git*) show_install_git_menu ;;
   *Rails*) present_terminal "omari-install-dev-env ruby" ;;
   *JavaScript*) show_install_javascript_menu ;;
   *Go*) present_terminal "omari-install-dev-env go" ;;
@@ -285,14 +451,6 @@ show_install_databases_menu() {
   esac
 }
 
-show_install_git_menu() {
-  case $(menu "Install Git" "  Github CLI\n  Gitlab CLI") in
-  *Github*) install_app "Github CLI" "github-cli" ;;
-  *Gitlab*) install "Gitlab CLI" "glab" ;;
-  *) show_install_development_menu ;;
-  esac
-}
-
 show_install_javascript_menu() {
   case $(menu "Install" "  Node.js\n  Bun\n  Deno") in
   *Node*) present_terminal "omari-install-dev-env node" ;;
@@ -312,10 +470,10 @@ show_install_elixir_menu() {
 
 show_install_editor_menu() {
   case $(menu "Install" "  VSCode\n  Cursor\n  Zed\n  Emacs") in
-  *VSCode*) install_app "Visual Studio Code" "visual-studio-code" ;;
-  *Cursor*) install_app "Cursor" "cursor" ;;
-  *Zed*) install_app "Zed" "zed" ;;
-  *Emacs*) install_app "Doom Emacs" "doom-emacs" ;;
+  *VSCode*) present_terminal omari-install-vscode ;;
+  *Cursor*) present_terminal "omari-install-cursor" ;;
+  *Zed*) install "Zed" "zed" ;;
+  *Emacs*) present_terminal "omari-install-doom-emacs" ;;
   *) show_install_menu ;;
   esac
 }
@@ -331,28 +489,30 @@ show_install_terminal_menu() {
 
 show_install_ai_menu() {
   case $(menu "Install" "󱚤  Ollama") in
-  *Ollama*) install_app "Ollama" "ollama" ;;
+  *Ollama*) present_terminal "omari-install-ollama" ;;
   *) show_install_menu ;;
   esac
 }
 
 show_install_gaming_menu() {
   case $(menu "Install" "  Steam\n  RetroArch\n󰍳  Minecraft") in
-  *Steam*) install_app "Steam" "steam" ;;
-  *RetroArch*) install_app "RetroArch" "retroarch" ;;
-  *Minecraft*) install_app "Minecraft" "minecraft" ;;
+  *Steam*) present_terminal "omari-install-gaming-steam" ;;
+  *RetroArch*) present_terminal "omari-install-gaming-retroarch" ;;
+  *Minecraft*) present_terminal "omari-install-gaming-minecraft" ;;
   *) show_install_menu ;;
   esac
 }
 
 show_remove_menu() {
-  case $(menu "Remove" "  Package\n  Web App\n  TUI\n󰀻  App\n  Style\n󰵮  Development\n󰏓  Preinstalls") in
+  case $(menu "Remove" "  Package\n  Web App\n  TUI\n  Style\n  Browser\n󰵮  Development\n󱚤  AI\n  Gaming\n󰏓  Preinstalls") in
   *Package*) terminal omari-pkg-remove ;;
   *Web*) present_terminal omari-webapp-remove ;;
   *TUI*) present_terminal omari-tui-remove ;;
-  *App*) present_terminal omari-app-remove ;;
   *Style*) show_remove_style_menu ;;
+  *Browser*) show_remove_browser_menu ;;
   *Development*) show_remove_development_menu ;;
+  *AI*) show_remove_ai_menu ;;
+  *Gaming*) show_remove_gaming_menu ;;
   *Preinstalls*) present_terminal omari-remove-preinstalls ;;
   *) show_main_menu ;;
   esac
@@ -376,6 +536,17 @@ show_remove_font_menu() {
   esac
 }
 
+show_remove_browser_menu() {
+  case $(menu "Remove" "  Chrome\n  Edge\n  Brave\n  Firefox\n  Zen") in
+  *Chrome*) present_terminal "omari-remove-browser chrome" ;;
+  *Edge*) present_terminal "omari-remove-browser edge" ;;
+  *Brave*) present_terminal "omari-remove-browser brave" ;;
+  *Firefox*) present_terminal "omari-remove-browser firefox" ;;
+  *Zen*) present_terminal "omari-remove-browser zen" ;;
+  *) show_remove_menu ;;
+  esac
+}
+
 show_remove_development_menu() {
   case $(menu "Remove Development Environment" "󰫏  Ruby on Rails\n  JavaScript\n  Go\n  PHP\n  Python\n  Elixir\n  Zig\n  Rust\n  Java\n  .NET\n  OCaml\n  Clojure\n  Scala") in
   *Rails*) present_terminal "omari-remove-dev-env ruby" ;;
@@ -395,8 +566,41 @@ show_remove_development_menu() {
   esac
 }
 
+show_remove_javascript_menu() {
+  case $(menu "Remove JavaScript Environment" "  Node.js\n  Bun\n  Deno") in
+  *Node*) present_terminal "omari-remove-dev-env node" ;;
+  *Bun*) present_terminal "omari-remove-dev-env bun" ;;
+  *Deno*) present_terminal "omari-remove-dev-env deno" ;;
+  *) show_remove_development_menu ;;
+  esac
+}
+
+show_remove_elixir_menu() {
+  case $(menu "Remove Elixir Environment" "  Elixir\n  Phoenix") in
+  *Elixir*) present_terminal "omari-remove-dev-env elixir" ;;
+  *Phoenix*) present_terminal "omari-remove-dev-env phoenix" ;;
+  *) show_remove_development_menu ;;
+  esac
+}
+
+show_remove_ai_menu() {
+  case $(menu "Remove AI" "󱚤  Ollama") in
+  *Ollama*) present_terminal "omari-remove-ollama" ;;
+  *) show_remove_menu ;;
+  esac
+}
+
+show_remove_gaming_menu() {
+  case $(menu "Remove Gaming" "  Steam\n  RetroArch\n󰍳  Minecraft") in
+  *Steam*) present_terminal "omari-remove-gaming-steam" ;;
+  *RetroArch*) present_terminal "omari-remove-gaming-retroarch" ;;
+  *Minecraft*) present_terminal "omari-remove-gaming-minecraft" ;;
+  *) show_remove_menu ;;
+  esac
+}
+
 show_update_menu() {
-  local brand_name=$(omari-brand)
+  local brand_name=$(omari-branding-name)
 
   case $(menu "Update" "󰟢  $brand_name\n󰔫  Channel\n  Config\n󰸌  Themes\n  Process\n󰇅  Hardware\n  Firmware\n  Password") in
   *$brand_name*) present_terminal omari-update ;;
@@ -420,7 +624,9 @@ show_update_channel_menu() {
 }
 
 show_update_config_menu() {
-  case $(menu "Use default config" "  Keybindings\n󱣴  Plymouth\n  Starship\n  Tmux\n󰌧  Walker") in
+  case $(menu "Use default config" "  Gnome\n󰍂  GDM\n  Keybindings\n󱣴  Plymouth\n  Starship\n  Tmux\n󰌧  Walker") in
+  *Gnome*) present_terminal omari-refresh-gnome ;;
+  *GDM*) present_terminal omari-refresh-gdm ;;
   *Keybindings*) present_terminal omari-refresh-keybindings ;;
   *Plymouth*) present_terminal omari-refresh-plymouth ;;
   *Starship*) present_terminal omari-refresh-config starship.toml ;;
@@ -438,9 +644,8 @@ show_update_process_menu() {
 }
 
 show_update_hardware_menu() {
-  case $(menu "Restart" "  Audio\n󰂯  Bluetooth") in
+  case $(menu "Restart" "  Audio") in
   *Audio*) present_terminal omari-restart-pipewire ;;
-  *Bluetooth*) present_terminal omari-restart-bluetooth ;;
   *) show_update_menu ;;
   esac
 }
@@ -462,7 +667,7 @@ show_system_menu() {
   options="$options\n󰌾  Logout\n󰜉  Restart\n󰐥  Shutdown"
 
   case $(menu "System" "$options") in
-  *Lock*) omari-system-lock-screen ;;
+  *Lock*) omari-system-lock ;;
   *Suspend*) systemctl suspend ;;
   *Logout*) omari-system-logout ;;
   *Restart*) omari-system-reboot ;;
@@ -477,12 +682,15 @@ show_main_menu() {
 
 go_to_menu() {
   case "${1,,}" in
-  *apps*) omari-apps ;;
+  *apps*) omari-menu-app ;;
   *learn*) show_learn_menu ;;
   *trigger*) show_trigger_menu ;;
   *toggle*) show_toggle_menu ;;
-  *style*) show_style_menu ;;
+  *share*) show_share_menu ;;
+  *reminder-set*) show_custom_reminder_input ;;
+  *reminder*) show_reminder_menu ;;
   *background*) show_background_menu ;;
+  *style*) show_style_menu ;;
   *theme*) show_theme_menu ;;
   *setup*) show_setup_menu ;;
   *install*) show_install_menu ;;

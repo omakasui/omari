@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# omari:summary=Create a desktop launcher for a terminal UI app.
+# omari:args=[name command icon-url]
+
 set -e
 
 if (( $# != 3 )); then

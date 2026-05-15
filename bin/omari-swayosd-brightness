@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Display brightness level using SwayOSD on the current monitor.
-# Usage: omari-swayosd-brightness <percent>
+# omari:summary=Display brightness level using SwayOSD on the current monitor.
+# omari:args=<0-100>
+# omari:examples=omari swayosd brightness 0 | omari swayosd brightness 50 | omari swayosd brightness 100
 
 percent="$1"
 

@@ -1,9 +1,11 @@
 #!/bin/bash
 
-# Install one of the supported fonts. Usually called via Install > Fonts > * in the Omari Menu.
+# omari:summary=Install a font for use in the terminal and code editor.
+# omari:args=<font>
+# omari:examples=omari-install-font jetbrains-mono
 
 if [[ -z $1 ]]; then
-  echo "Usage: omari-install-font <font>" >&2
+  echo "Usage: omadeb-install-font <font>" >&2
   exit 1
 fi
 
@@ -23,7 +25,7 @@ mscore)
   omari-pkg-add ttf-mscorefonts-installer
   ;;
 *)
-  echo "Usage: omari-install-font <font>" >&2
+  echo "Usage: omadeb-install-font <font>" >&2
   exit 1
   ;;
 esac

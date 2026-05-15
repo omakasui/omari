@@ -1,13 +1,11 @@
 #!/bin/bash
 
-# Add the named packages to the system if they're missing. Returns false if it couldn't be done.
-# Usage: omari-pkg-add [--no-recommends] package1 package2 ...
-
-APT_EXTRA_OPTS=()
-if [[ "$1" == "--no-recommends" ]]; then
-  APT_EXTRA_OPTS+=("--no-install-recommends")
-  shift
-fi
+# omari:summary=Install APT packages with apt-get if they are missing.
+# omari:group=install
+# omari:name=package
+# omari:args=<packages...>
+# omari:examples=omari pkg add jq ripgrep
+# omari:requires-sudo=true
 
 if omari-pkg-missing "$@"; then
   sudo apt-get -y "${APT_EXTRA_OPTS[@]}" install "$@" || exit 1

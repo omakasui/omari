@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Ensure Zellij config file exists to avoid startup issues.
+# omari:summary=Ensure the Zellij configuration file exists before startup.
 
 if omari-cmd-present -v zellij >/dev/null 2>&1; then
     touch ~/.config/zellij/config.kdl

@@ -1,5 +1,5 @@
 # Dynamic theme colors
-#config-file = ?"~/.config/omari/current/theme/ghostty.conf"
+config-file = ?"~/.config/omari/current/theme/ghostty.conf"
 
 # Font
 font-family = "Cascadia Mono Nerd Font"

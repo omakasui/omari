@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# omari:summary=Refresh the SDDM theme from default
+# omari:requires-sudo=true
+
 sudo mkdir -p /usr/share/sddm/themes
 
 # Refresh the SDDM theme from default

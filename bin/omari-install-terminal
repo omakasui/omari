@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Install one of the approved terminals and set it as the default for Omari (Super + Return etc).
+# omari:summary=Install one of the approved terminals and set it as the default for Omari (Super + Return etc).
+# omari:args=<alacritty|ghostty|kitty>
+# omari:requires-sudo=true
 
 if (($# == 0)); then
   echo "Usage: omari-install-terminal [alacritty|ghostty|kitty]"
@@ -26,7 +28,8 @@ desktop_path="/usr/share/applications/$desktop_id"
 if omari-pkg-add "$package"; then
   # Copy custom desktop entry for alacritty with X-TerminalArg* keys
   if [[ $package == "alacritty" ]]; then
-    desktop_path="$OMARI_PATH/applications/desktop/Alacritty.desktop"
+    desktop_path="$OMARI_PATH/applications/Alacritty.desktop"
+
     mkdir -p ~/.local/share/applications
     cp "$desktop_path" ~/.local/share/applications/
   fi

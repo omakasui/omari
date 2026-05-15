@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Creates a new Omari migration named after the unix timestamp of the last commit.
-# Only intended for Omari developers.
+# omari:summary=Creates a new Omari migration named after the unix timestamp of the last commit.
 
 cd ~/.local/share/omari
 migration_file="$HOME/.local/share/omari/migrations/$(git log -1 --format=%cd --date=unix).sh"

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Overwrite all the user configs in ~/.config/niri with the Omari defaults.
+# omari:summary=Overwrite all Omari user configs in ~/.config/niri with the Omari defaults.
 
 omari-refresh-config niri/config.kdl
 

@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Set the branch for Omari's git repository.
+# omari:summary=Set the branch for Omari's git repository.
+# omari:args=<main|dev>
 
 if (($# == 0)); then
   echo "Usage: omari-branch-set [main|dev]"
