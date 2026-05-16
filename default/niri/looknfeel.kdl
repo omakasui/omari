@@ -7,6 +7,9 @@ layout {
 
     center-focused-column "never"
 
+    // Keep a lone column from hugging the left edge on empty workspaces.
+    always-center-single-column
+
     preset-column-widths {
         // Proportion sets the width as a fraction of the output width, taking gaps into account.
         proportion 0.33333
@@ -80,7 +83,7 @@ overview {
         color "#00000050"
     }
 
-    zoom 0.5
+     zoom 0.75
 }
 
 // Blue effect
