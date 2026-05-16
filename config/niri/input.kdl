@@ -72,7 +72,6 @@ gestures {
 
 // Cursor settings
 cursor {
-    xcursor-theme "capitaine-cursors-light"
     xcursor-size 24
     hide-when-typing
 }
