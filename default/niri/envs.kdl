@@ -1,4 +1,7 @@
 environment {
+    // Tell apps which compositor is running (used by xdg-desktop-portal, etc.).
+    XDG_CURRENT_DESKTOP "niri"
+
     // Cursor
     XCURSOR_SIZE "24"
 
