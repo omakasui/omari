@@ -199,10 +199,12 @@ show_about_menu() {
 }
 
 show_setup_menu() {
-  case $(menu "Setup" "󰤆  System Sleep\n  Folders\n  Keybindings\n󰓎  Defaults\n󰱔  DNS\n  Config") in
+  case $(menu "Setup" "  Audio\n  Wifi\n󰂯  Bluetooth\n󰤆  System Sleep\n  Folders\n  Keybindings\n󰓎  Defaults\n󰱔  DNS\n  Config") in
+  *Audio*) omari-launch-audio ;;
+  *Wifi*) omari-launch-wifi ;;
+  *Bluetooth*) omari-launch-bluetooth ;;
   *System*) show_setup_system_menu ;;
-  *Folders*) show_setup_folders_menu ;;
-  *Keybindings*) show_setup_keybindings_menu ;;
+  *Keybindings*) open_in_editor ~/.config/niri/bindings.kdl ;;
   *Defaults*) show_setup_default_menu ;;
   *DNS*) present_terminal omari-setup-dns ;;
   *Config*) show_setup_config_menu ;;
@@ -221,22 +223,6 @@ show_setup_system_menu() {
 
   case $(menu "System" "$options") in
   *Suspend*) omari-toggle-suspend ;;
-  *) show_setup_menu ;;
-  esac
-}
-
-show_setup_folders_menu() {
-  case $(menu "Folders" "󰮝  Add\n󰮞  Remove") in
-  *Add*) present_terminal omari-gnome-grid-folder-add ;;
-  *Remove*) present_terminal omari-gnome-grid-folder-drop ;;
-  *) show_setup_menu ;;
-  esac
-}
-
-show_setup_keybindings_menu() {
-  case $(menu "Keybindings" "   Add\n   Remove") in
-  *Add*) present_terminal omari-gnome-keybinding-add ;;
-  *Remove*) present_terminal omari-gnome-keybinding-drop ;;
   *) show_setup_menu ;;
   esac
 }
@@ -309,28 +295,22 @@ show_setup_default_editor_menu() {
   local options=""
   omari-cmd-present nvim && options="$options  Neovim"
   omari-cmd-present code && options="${options:+$options\n}  VSCode"
-  omari-cmd-present cursor && options="${options:+$options\n}  Cursor"
   omari-cmd-present zeditor && options="${options:+$options\n}  Zed"
   omari-cmd-present vim && options="${options:+$options\n}  Vim"
-  omari-cmd-present emacs && options="${options:+$options\n}  Emacs"
 
   local current=""
   case "$(omari-default-editor)" in
   nvim) current="  Neovim" ;;
   code) current="  VSCode" ;;
-  cursor) current="  Cursor" ;;
   zed | zeditor) current="  Zed" ;;
   vim) current="  Vim" ;;
-  emacs) current="  Emacs" ;;
   esac
 
   case $(menu "Default Editor" "$options" "" "$current") in
   *Neovim*) omari-default-editor nvim ;;
   *VSCode*) omari-default-editor code ;;
-  *Cursor*) omari-default-editor cursor ;;
   *Zed*) omari-default-editor zed ;;
   *Vim*) omari-default-editor vim ;;
-  *Emacs*) omari-default-editor emacs ;;
   *) show_setup_default_menu ;;
   esac
 }
@@ -344,36 +324,29 @@ show_setup_config_menu() {
 }
 
 show_install_menu() {
-  case $(menu "Install" "  Package\n  Web App\n  TUI\n  Service\n  Browser\n  Utility\n  Style\n󰵮  Development\n  Editor\n  Terminal\n󱚤  AI\n  Gaming") in
+  case $(menu "Install" "  Package\n  Web App\n  TUI\n  Service\n  Browser\n  Style\n󰵮  Development\n  Editor\n  Terminal") in
   *Package*) terminal omari-pkg-install ;;
   *Web*) present_terminal omari-webapp-install ;;
   *TUI*) present_terminal omari-tui-install ;;
   *Service*) show_install_service_menu ;;
   *Browser*) show_install_browser_menu ;;
-  *Utility*) show_install_utility_menu ;;
   *Style*) show_install_style_menu ;;
   *Development*) show_install_development_menu ;;
   *Editor*) show_install_editor_menu ;;
   *Terminal*) show_install_terminal_menu ;;
-  *AI*) show_install_ai_menu ;;
-  *Gaming*) show_install_gaming_menu ;;
   *) show_main_menu ;;
   esac
 }
 
 show_install_service_menu() {
-  case $(menu "Install" "  1password\n  Bitwarden\n  Discord\n  Dropbox\n  LibreOffice\n  LocalSend\n  ObsStudio\n  Obsidian\n  Signal\n  Spotify\n  Typora\n  Tailscale") in
-  *1password*) present_terminal omari-install-1password ;;
+  case $(menu "Install" "  Bitwarden\n  Discord\n  LibreOffice\n  LocalSend\n  ObsStudio\n  Obsidian\n  Spotify\n  Tailscale") in
   *Bitwarden*) install "Bitwarden" "bitwarden" ;;
   *Discord*) present_terminal omari-install-discord ;;
-  *Dropbox*) install "Dropbox" "nautilus-dropbox" ;;
   *LibreOffice*) install "LibreOffice" "libreoffice" ;;
   *LocalSend*) install "LocalSend" "localsend" ;;
   *ObsStudio*) install "ObsStudio" "obs-studio" ;;
   *Obsidian*) install "Obsidian" "obsidian" ;;
-  *Signal*) present_terminal omari-install-signal ;;
   *Spotify*) present_terminal omari-install-spotify ;;
-  *Typora*) present_terminal omari-install-typora ;;
   *Tailscale*) present_terminal omari-install-tailscale ;;
   *) show_install_menu ;;
   esac
@@ -386,16 +359,6 @@ show_install_browser_menu() {
   *Brave*) present_terminal "omari-install-browser brave" ;;
   *Firefox*) present_terminal "omari-install-browser firefox" ;;
   *Zen*) present_terminal "omari-install-browser zen" ;;
-  *) show_install_menu ;;
-  esac
-}
-
-show_install_utility_menu() {
-  case $(menu "Install" "  Flameshot\n  Pinta\n  Starship\n  Xournalpp") in
-  *Flameshot*) install "Flameshot" "flameshot" ;;
-  *Pinta*) install "Pinta" "pinta" ;;
-  *Starship*) install "Starship" "starship" ;;
-  *Xournalpp*) install "Xournalpp" "xournalpp" ;;
   *) show_install_menu ;;
   esac
 }
@@ -469,11 +432,9 @@ show_install_elixir_menu() {
 }
 
 show_install_editor_menu() {
-  case $(menu "Install" "  VSCode\n  Cursor\n  Zed\n  Emacs") in
+  case $(menu "Install" "  VSCode\n  Zed") in
   *VSCode*) present_terminal omari-install-vscode ;;
-  *Cursor*) present_terminal "omari-install-cursor" ;;
   *Zed*) install "Zed" "zed" ;;
-  *Emacs*) present_terminal "omari-install-doom-emacs" ;;
   *) show_install_menu ;;
   esac
 }
@@ -487,32 +448,14 @@ show_install_terminal_menu() {
   esac
 }
 
-show_install_ai_menu() {
-  case $(menu "Install" "󱚤  Ollama") in
-  *Ollama*) present_terminal "omari-install-ollama" ;;
-  *) show_install_menu ;;
-  esac
-}
-
-show_install_gaming_menu() {
-  case $(menu "Install" "  Steam\n  RetroArch\n󰍳  Minecraft") in
-  *Steam*) present_terminal "omari-install-gaming-steam" ;;
-  *RetroArch*) present_terminal "omari-install-gaming-retroarch" ;;
-  *Minecraft*) present_terminal "omari-install-gaming-minecraft" ;;
-  *) show_install_menu ;;
-  esac
-}
-
 show_remove_menu() {
-  case $(menu "Remove" "  Package\n  Web App\n  TUI\n  Style\n  Browser\n󰵮  Development\n󱚤  AI\n  Gaming\n󰏓  Preinstalls") in
+  case $(menu "Remove" "  Package\n  Web App\n  TUI\n  Style\n  Browser\n󰵮  Development\n󰏓  Preinstalls") in
   *Package*) terminal omari-pkg-remove ;;
   *Web*) present_terminal omari-webapp-remove ;;
   *TUI*) present_terminal omari-tui-remove ;;
   *Style*) show_remove_style_menu ;;
   *Browser*) show_remove_browser_menu ;;
   *Development*) show_remove_development_menu ;;
-  *AI*) show_remove_ai_menu ;;
-  *Gaming*) show_remove_gaming_menu ;;
   *Preinstalls*) present_terminal omari-remove-preinstalls ;;
   *) show_main_menu ;;
   esac
@@ -583,22 +526,6 @@ show_remove_elixir_menu() {
   esac
 }
 
-show_remove_ai_menu() {
-  case $(menu "Remove AI" "󱚤  Ollama") in
-  *Ollama*) present_terminal "omari-remove-ollama" ;;
-  *) show_remove_menu ;;
-  esac
-}
-
-show_remove_gaming_menu() {
-  case $(menu "Remove Gaming" "  Steam\n  RetroArch\n󰍳  Minecraft") in
-  *Steam*) present_terminal "omari-remove-gaming-steam" ;;
-  *RetroArch*) present_terminal "omari-remove-gaming-retroarch" ;;
-  *Minecraft*) present_terminal "omari-remove-gaming-minecraft" ;;
-  *) show_remove_menu ;;
-  esac
-}
-
 show_update_menu() {
   local brand_name=$(omari-branding-name)
 
@@ -624,9 +551,8 @@ show_update_channel_menu() {
 }
 
 show_update_config_menu() {
-  case $(menu "Use default config" "  Gnome\n󰍂  GDM\n  Keybindings\n󱣴  Plymouth\n  Starship\n  Tmux\n󰌧  Walker") in
-  *Gnome*) present_terminal omari-refresh-gnome ;;
-  *GDM*) present_terminal omari-refresh-gdm ;;
+  case $(menu "Use default config" "  Niri\n  Keybindings\n󱣴  Plymouth\n  Starship\n  Tmux\n󰌧  Walker") in
+  *Niri*) present_terminal omari-refresh-niri ;;
   *Keybindings*) present_terminal omari-refresh-keybindings ;;
   *Plymouth*) present_terminal omari-refresh-plymouth ;;
   *Starship*) present_terminal omari-refresh-config starship.toml ;;
@@ -644,8 +570,9 @@ show_update_process_menu() {
 }
 
 show_update_hardware_menu() {
-  case $(menu "Restart" "  Audio") in
+  case $(menu "Restart" "  Audio\n󰂯  Bluetooth") in
   *Audio*) present_terminal omari-restart-pipewire ;;
+  *Bluetooth*) present_terminal omari-restart-bluetooth ;;
   *) show_update_menu ;;
   esac
 }
@@ -682,7 +609,7 @@ show_main_menu() {
 
 go_to_menu() {
   case "${1,,}" in
-  *apps*) omari-menu-app ;;
+  *apps*) walker -p "Launch..." ;;
   *learn*) show_learn_menu ;;
   *trigger*) show_trigger_menu ;;
   *toggle*) show_toggle_menu ;;
