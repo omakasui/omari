@@ -7,10 +7,10 @@ input {
     keyboard {
         xkb {
             // Use multiple keyboard layouts and switch between them with Left Alt + Right Alt
-            // layout = us,dk,eu
+            // layout "us,dk,eu"
 
             // Use a specific keyboard variant if needed (e.g. intl for international keyboards)
-            // variant = intl
+            // variant "intl"
 
             options "compose:caps"
 
