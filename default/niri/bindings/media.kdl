@@ -5,7 +5,7 @@ binds {
     XF86AudioMute        allow-when-locked=true { spawn-sh "omari-swayosd-client --output-volume mute-toggle"; }
     XF86AudioMicMute     allow-when-locked=true { spawn "omari-cmd-mic-mute"; }
     XF86MonBrightnessUp     allow-when-locked=true { spawn-sh "omari-brightness-display +5%"; }
-    XF86MonBrightnessDown   allow-when-locked=true { spawn-sh "omari-brightness-display -5%"; }
+    XF86MonBrightnessDown   allow-when-locked=true { spawn-sh "omari-brightness-display 5%-"; }
     XF86KbdBrightnessUp     allow-when-locked=true { spawn-sh "omari-brightness-keyboard up"; }
     XF86KbdBrightnessDown   allow-when-locked=true { spawn-sh "omari-brightness-keyboard down"; }
     XF86KbdLightOnOff       allow-when-locked=true { spawn-sh "omari-brightness-keyboard cycle"; }
@@ -14,7 +14,7 @@ binds {
     Alt+XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "omari-swayosd-client --output-volume +1"; }
     Alt+XF86AudioLowerVolume allow-when-locked=true { spawn-sh "omari-swayosd-client --output-volume -1"; }
     Alt+XF86MonBrightnessUp allow-when-locked=true { spawn-sh "omari-brightness-display +1%"; }
-    Alt+XF86MonBrightnessDown allow-when-locked=true { spawn-sh "omari-brightness-display -1%"; }
+    Alt+XF86MonBrightnessDown allow-when-locked=true { spawn-sh "omari-brightness-display 1%-"; }
 
     // Requires playerctl
     XF86AudioNext        allow-when-locked=true { spawn-sh "omari-swayosd-client --playerctl next"; }
