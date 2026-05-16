@@ -29,6 +29,7 @@ input {
     touchpad {
         // Enable tap to click, which allows you to tap the touchpad to perform a click instead of pressing down on it.
         tap
+        tap-button-map "left-right-middle"
 
         // Control the speed of your scrolling
         scroll-factor 0.4
@@ -37,10 +38,41 @@ input {
     }
 
     mouse {
+        // "flat" = raw movement, "adaptive" = acceleration curve.
+        accel-profile "flat"
+
+        // Adjust pointer speed: -1.0 (slowest) … 0.0 (default) … 1.0 (fastest).
+        // accel-speed 0.0
+
         // Put your mouse settings here
     }
 
     trackpoint {
         // Put your trackpoint settings here
     }
+
+    // "Mod" = Super on bare metal, Alt inside a nested Niri window.
+    mod-key "Super"
+    mod-key-nested "Alt"
+
+    // Warp the cursor to the center of a newly focused window.
+    // warp-mouse-to-focus
+
+    // Focus windows automatically when the mouse enters them.
+    // max-scroll-amount="0%" limits it to windows already fully on screen.
+    // focus-follows-mouse max-scroll-amount="0%"
+}
+
+// Hot corners: move cursor to the top-left corner to open Niri's overview.
+gestures {
+    hot-corners {
+        // off
+    }
+}
+
+// Cursor settings
+cursor {
+    xcursor-theme "capitaine-cursors-light"
+    xcursor-size 24
+    hide-when-typing
 }
