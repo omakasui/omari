@@ -2,4 +2,4 @@
 
 # omari:summary=Print the name of the currently focused Hyprland monitor.
 
-niri msg --json monitors | jq -r '.[] | select(.focused) | .name'
+niri msg --json focused-output | jq -r '.name'
