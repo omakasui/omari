@@ -15,10 +15,6 @@ CURRENT_BACKGROUND_LINK="$HOME/.config/omari/current/background"
 # Create symlink to the new background
 ln -nsf "$BACKGROUND" "$CURRENT_BACKGROUND_LINK"
 
-# Create a blurred version of the background
-BLURRED_BACKGROUND="$HOME/.config/omari/current/background-blurred.jpg"
-convert "$BACKGROUND" -blur 0x15 "$BLURRED_BACKGROUND"
-
 # Kill existing swaybg and start new one
 niri msg action do-screen-transition
 pkill -x swaybg
