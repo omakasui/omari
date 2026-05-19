@@ -330,13 +330,12 @@ show_install_menu() {
 }
 
 show_install_service_menu() {
-  case $(menu "Install" "  Bitwarden\n  Discord\n  LibreOffice\n  LocalSend\n  ObsStudio\n  Obsidian\n  Spotify\n  Tailscale") in
+  case $(menu "Install" "  Bitwarden\n  Discord\n  LibreOffice\n  LocalSend\n  ObsStudio\n  Spotify\n  Tailscale") in
   *Bitwarden*) install "Bitwarden" "bitwarden" ;;
   *Discord*) present_terminal omari-install-discord ;;
   *LibreOffice*) install "LibreOffice" "libreoffice" ;;
   *LocalSend*) install "LocalSend" "localsend" ;;
   *ObsStudio*) install "ObsStudio" "obs-studio" ;;
-  *Obsidian*) install "Obsidian" "obsidian" ;;
   *Spotify*) present_terminal omari-install-spotify ;;
   *Tailscale*) present_terminal omari-install-tailscale ;;
   *) show_install_menu ;;
