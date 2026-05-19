@@ -9,7 +9,7 @@ if (($# == 0)); then
 fi
 
 WINDOW_PATTERN="$1"
-LAUNCH_COMMAND="${2:-"uwsm-app -- $WINDOW_PATTERN"}"
+LAUNCH_COMMAND="${2:-"$WINDOW_PATTERN"}"
 
 WINDOW_ADDRESS=$(
   niri msg --json windows |

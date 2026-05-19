@@ -4,4 +4,4 @@
 # omari:args=<command>
 
 cmd="$*"
-exec setsid uwsm-app -- xdg-terminal-exec --app-id=org.omari.terminal --title=Omari -e bash -c "omari-show-logo; $cmd; if (( \$? != 130 )); then omari-show-done; fi"
+exec setsid xdg-terminal-exec --app-id=org.omari.terminal --title=Omari -e bash -c "omari-show-logo; $cmd; if (( \$? != 130 )); then omari-show-done; fi"

@@ -16,4 +16,4 @@ else
   new_window_flag="--new-window"
 fi
 
-exec setsid uwsm-app -- "$browser_exec" "${@/--private/$private_flag}"
+exec setsid "$browser_exec" "${@/--private/$private_flag}"
