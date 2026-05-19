@@ -26,6 +26,8 @@ declare -A ROUTE_IS_ALIAS
 declare -A BINARY_TO_KEY
 declare -A GROUP_DESCRIPTIONS
 
+GROUP_DESCRIPTIONS[ac]="AC power detection"
+GROUP_DESCRIPTIONS[battery]="Battery status helpers"
 GROUP_DESCRIPTIONS[branch]="Omari git branch management"
 GROUP_DESCRIPTIONS[branding]="Omari branding management"
 GROUP_DESCRIPTIONS[brightness]="Display and keyboard brightness"
