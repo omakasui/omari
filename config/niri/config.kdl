@@ -3,17 +3,13 @@
 // https://niri-wm.github.io/niri/Configuration:-Introduction
 
 // Use defaults Omari defaults (but don't edit these directly!)
-include "../../.local/share/omari/default/niri/autostart.kdl"
-include "../../.local/share/omari/default/niri/bindings/media.kdl"
-include "../../.local/share/omari/default/niri/bindings/tiling.kdl"
-include "../../.local/share/omari/default/niri/bindings/utilities.kdl"
-include "../../.local/share/omari/default/niri/envs.kdl"
-include "../../.local/share/omari/default/niri/looknfeel.kdl"
-include "../../.local/share/omari/default/niri/input.kdl"
-include "../../.local/share/omari/default/niri/window.kdl"
-include "../../.local/share/omari/default/niri/apps/system.kdl"
-include "../../.local/share/omari/default/niri/apps/terminal.kdl"
-include "../omari/current/theme/niri.kdl"
+include "~/.local/share/omari/default/niri/autostart.kdl"
+include "~/.local/share/omari/default/niri/apps.kdl"
+include "~/.local/share/omari/default/niri/bindings/media.kdl"
+include "~/.local/share/omari/default/niri/bindings/clipboard.kdl"
+include "~/.local/share/omari/default/niri/bindings/tiling.kdl"
+include "~/.local/share/omari/default/niri/bindings/utilities.kdl"
+include "~/.local/share/omari/default/niri/window.kdl"
 
 // Change your own setup in these files (and overwrite any settings from defaults!)
 include optional=true "output.kdl"
@@ -21,5 +17,9 @@ include optional=true "input.kdl"
 include optional=true "bindings.kdl"
 include optional=true "looknfeel.kdl"
 include optional=true "autostart.kdl"
+include optional=true "windowrules.kdl"
+
+// Use the current theme (but you can overwrite specific settings in looknfeel.kdl if you want!)
+include "~/.config/omari/current/theme/niri.kdl"
 
 // Add any other personal Niri configuration below

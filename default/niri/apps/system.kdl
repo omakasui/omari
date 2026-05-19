@@ -1,21 +1,33 @@
-// Floating windows
+// Floating utility windows
 window-rule {
-  match app-id=r#"^org\.omari\.bluetui$"#
-  match app-id=r#"^org\.omari\.impala$"#
-  match app-id=r#"^org\.omari\.wiremix$"#
-  match app-id=r#"^org\.omari\.btop$"#
-  match app-id=r#"^org\.omari\.terminal$"#
-  match app-id=r#"^org\.omari\.bash$"#
-  match app-id=r#"^org\.gnome\.NautilusPreviewer$"#
-  match app-id=r#"^org\.gnome\.Evince$"#
-
-  open-floating true
-  default-column-width { fixed 875; }
-  default-window-height { fixed 600; }
+    match app-id="org.omari.bluetui|org.omari.impala|org.omari.wiremix|org.omari.btop|org.omari.terminal|org.omari.bash|org.codeberg.dnkl.foot|org.gnome.NautilusPreviewer|org.gnome.Evince|com.gabm.satty|omari|About|TUI.float|imv"
+    open-floating true
+    default-column-width { fixed 875; }
+    default-window-height { fixed 600; }
 }
 
 window-rule {
-  match app-id=r#"^org\.gnome\.Calculator$"#
+    match app-id="xdg-desktop-portal-gtk|sublime_text|DesktopEditors|org.gnome.Nautilus"
+    match title="^(Open.*Files?|Open [Ff]older.*|Save.*Files?|Save.*As|Save|All Files|.*wants to [open|save].*|[Cc]hoose.*)"
+    open-floating true
+    default-column-width { fixed 875; }
+    default-window-height { fixed 600; }
+}
 
-  open-floating true
+window-rule {
+    match app-id="org.gnome.Calculator"
+    open-floating true
+}
+
+// Fullscreen screensaver
+window-rule {
+    match app-id="org.omari.screensaver"
+    open-fullscreen true
+    open-floating true
+}
+
+// No transparency on media windows
+window-rule {
+    match app-id="^(zoom|vlc|mpv|org.kde.kdenlive|com.obsproject.Studio|com.github.PintaProject.Pinta|imv|org.gnome.NautilusPreviewer)$"
+    opacity 1.0
 }

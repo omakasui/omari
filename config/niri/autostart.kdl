@@ -1,2 +1,2 @@
 // Extra autostart processes
-// spawn-sh-at-startup "uwsm-app -- my-service"
+// spawn-sh-at-startup "my-service"

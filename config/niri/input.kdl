@@ -12,7 +12,7 @@ input {
             // Use a specific keyboard variant if needed (e.g. intl for international keyboards)
             // variant "intl"
 
-            options "compose:caps"
+            options "caps:none"
 
             // Put your XKB options here
             // Leave it empty to use the default options, which are a good starting point for most users.
@@ -60,7 +60,7 @@ input {
 
     // Focus windows automatically when the mouse enters them.
     // max-scroll-amount="0%" limits it to windows already fully on screen.
-    // focus-follows-mouse max-scroll-amount="0%"
+    focus-follows-mouse max-scroll-amount="0%"
 }
 
 // Hot corners: move cursor to the top-left corner to open Niri's overview.

@@ -1,0 +1,14 @@
+
+window-rule {
+    // Don't draw borders around windows, and don't reserve space for them
+    draw-border-with-background false
+
+    // Don't tile the window, but still reserve space for it in the layout.
+    tiled-state true
+}
+
+// System dialogs
+window-rule {
+    match app-id="polkit-mate-authentication-agent-1"
+    open-floating true
+}
