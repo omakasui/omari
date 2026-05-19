@@ -316,9 +316,8 @@ show_setup_default_editor_menu() {
 }
 
 show_setup_config_menu() {
-  case $(menu "Setup" "󰌧  Walker\n󰞅  XCompose") in
+  case $(menu "Setup" "󰌧  Walker") in
   *Walker*) open_in_editor ~/.config/walker/config.toml && omari-restart-walker ;;
-  *XCompose*) open_in_editor ~/.XCompose && omari-restart-xcompose ;;
   *) show_setup_menu ;;
   esac
 }

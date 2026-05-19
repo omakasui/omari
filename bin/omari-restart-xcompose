@@ -1,5 +1,0 @@
-#!/bin/bash
-
-# omari:summary=Restart the IBus input method service to apply XCompose configuration changes.
-
-omari-restart-app fcitx5 --disable notificationitem
