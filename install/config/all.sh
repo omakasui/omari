@@ -11,7 +11,7 @@ run_logged $OMARI_INSTALL/config/mimetypes.sh
 run_logged $OMARI_INSTALL/config/docker.sh
 run_logged $OMARI_INSTALL/config/localdb.sh
 run_logged $OMARI_INSTALL/config/walker-elephant.sh
-run_logged $OMARI_INSTALL/config/waybar.sh
+run_logged $OMARI_INSTALL/config/mask-services.sh
 run_logged $OMARI_INSTALL/config/keyring.sh
 run_logged $OMARI_INSTALL/config/fast-shutdown.sh
 run_logged $OMARI_INSTALL/config/sudoless-asdcontrol.sh
