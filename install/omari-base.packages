@@ -21,8 +21,6 @@ curl
 eza
 
 fastfetch
-fcitx5
-fcitx5-config-qt
 fd-find
 ffmpeg
 ffmpegthumbnailer
@@ -111,7 +109,6 @@ tracker-miner-fs
 ufw
 ufw-docker
 unzip
-uwsm
 
 waybar
 wget
@@ -120,6 +117,8 @@ wiremix
 wireplumber
 wl-clip-persist
 wl-clipboard
+wooz
+wtype
 
 xdg-user-dirs
 xdg-desktop-portal
