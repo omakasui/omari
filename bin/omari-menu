@@ -169,14 +169,6 @@ show_theme_menu() {
 }
 
 show_font_menu() {
-  case $(menu "Font" "  Family\n󰧴  Size") in
-  *Family*) show_font_family_menu ;;
-  *Size*) present_terminal omari-font-size-set ;;
-  *) show_main_menu ;;
-  esac
-}
-
-show_font_family_menu() {
   font=$(menu "Font" "$(omari-font-list)" "--width 350" "$(omari-font-current)")
   if [[ $font == "CNCLD" || -z $font ]]; then
     back_to show_style_menu
