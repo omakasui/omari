@@ -4,7 +4,7 @@
   "position": "top",
   "spacing": 0,
   "height": 26,
-  "modules-left": ["niri/workspaces"],
+  "modules-left": ["custom/omari", "niri/workspaces"],
   "modules-center": [
     "clock",
     "custom/update",
@@ -19,6 +19,7 @@
     "battery",
   ],
   "niri/workspaces": {
+    "on-click": "activate",
     "format": "{icon}",
     "format-icons": {
       "default": "",
@@ -34,6 +35,12 @@
       "10": "0",
       "active": "󱓻",
     },
+  },
+  "custom/omari": {
+    "format": "󰗢",
+    "on-click": "omari-menu",
+    "on-click-right": "xdg-terminal-exec",
+    "tooltip-format": "Omari Menu\n\nSuper + Alt + Space",
   },
   "custom/update": {
     "format": "",
@@ -80,6 +87,8 @@
     "tooltip-format-discharging": "{power:>1.0f}W↓ {capacity}%",
     "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
     "interval": 5,
+    "on-click": "omari-menu power",
+    "on-click-right": "notify-send -u low \"$(omari-battery-status)\"",
     "states": {
       "warning": 20,
       "critical": 10,
