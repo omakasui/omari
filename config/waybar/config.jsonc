@@ -5,11 +5,7 @@
   "spacing": 0,
   "height": 26,
   "modules-left": ["custom/omari", "niri/workspaces"],
-  "modules-center": [
-    "clock",
-    "custom/update",
-    "custom/notification-silencing-indicator",
-  ],
+  "modules-center": ["clock", "custom/notification-silencing-indicator"],
   "modules-right": [
     "group/tray-expander",
     "bluetooth",
@@ -37,18 +33,10 @@
     },
   },
   "custom/omari": {
-    "format": "󰗢",
+    "format": "",
     "on-click": "omari-menu",
     "on-click-right": "xdg-terminal-exec",
     "tooltip-format": "Omari Menu\n\nSuper + Alt + Space",
-  },
-  "custom/update": {
-    "format": "",
-    "exec": "omari-update-available",
-    "on-click": "omari-launch-floating-terminal-with-presentation omari-update",
-    "tooltip-format": "Omari update available",
-    "signal": 7,
-    "interval": 21600,
   },
   "cpu": {
     "interval": 5,
