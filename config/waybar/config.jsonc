@@ -33,7 +33,7 @@
     },
   },
   "custom/omari": {
-    "format": "",
+    "format": "<span font='niri' font_size='12pt'>\ue903</span>",
     "on-click": "omari-menu",
     "on-click-right": "xdg-terminal-exec",
     "tooltip-format": "Omari Menu\n\nSuper + Alt + Space",
