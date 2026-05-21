@@ -191,10 +191,11 @@ show_about_menu() {
 }
 
 show_setup_menu() {
-  case $(menu "Setup" "  Audio\n  Wifi\n󰂯  Bluetooth\n󰤆  System Sleep\n  Folders\n  Keybindings\n󰓎  Defaults\n󰱔  DNS\n  Config") in
+  case $(menu "Setup" "  Audio\n  Wifi\n󰂯  Bluetooth\n󱐋  Power Profile\n󰤆  System Sleep\n  Folders\n  Keybindings\n󰓎  Defaults\n󰱔  DNS\n  Config") in
   *Audio*) omari-launch-audio ;;
   *Wifi*) omari-launch-wifi ;;
   *Bluetooth*) omari-launch-bluetooth ;;
+  *Power*) show_setup_power_menu ;;
   *System*) show_setup_system_menu ;;
   *Keybindings*) open_in_editor ~/.config/niri/bindings.kdl ;;
   *Defaults*) show_setup_default_menu ;;
@@ -202,6 +203,16 @@ show_setup_menu() {
   *Config*) show_setup_config_menu ;;
   *) show_main_menu ;;
   esac
+}
+
+show_setup_power_menu() {
+  profile=$(menu "Power Profile" "$(omari-powerprofiles-list)" "" "$(powerprofilesctl get)")
+
+  if [[ $profile == "CNCLD" || -z $profile ]]; then
+    back_to show_setup_menu
+  else
+    powerprofilesctl set "$profile"
+  fi
 }
 
 show_setup_system_menu() {
@@ -610,6 +621,7 @@ go_to_menu() {
   *style*) show_style_menu ;;
   *theme*) show_theme_menu ;;
   *setup*) show_setup_menu ;;
+  *power*) show_setup_power_menu ;;
   *install*) show_install_menu ;;
   *remove*) show_remove_menu ;;
   *update*) show_update_menu ;;

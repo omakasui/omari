@@ -87,6 +87,7 @@ plocate
 plymouth
 plymouth-themes
 polkitd
+power-profiles-daemon
 printer-driver-cups-pdf
 
 qt6-svg-plugins
