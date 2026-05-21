@@ -1,2 +1,3 @@
 mkdir -p ~/.local/share/fonts
-fc-cache
+cp ~/.local/share/omari/config/fonts/niri.ttf ~/.local/share/fonts/
+fc-cache -f
