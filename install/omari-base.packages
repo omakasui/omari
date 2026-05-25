@@ -125,7 +125,6 @@ wtype
 
 xdg-user-dirs
 xdg-desktop-portal
-xdg-desktop-portal-gnome
 xdg-desktop-portal-gtk
 xdg-terminal-exec
 xwayland
