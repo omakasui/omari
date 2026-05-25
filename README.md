@@ -1,16 +1,9 @@
 # Omari
 
-Omari is an Opinionated Debian and Niri setup.
-
-> ⚠️ **Warning: This project is under active development and is not stable. Use at your own risk.**
-
-## Installation
-
-To install Omari, simply run the following command in your terminal:
-
-```bash
-curl -fsSL https://omakasui.org/omari | bash
-```
+> [!WARNING]
+> This repository is moved to [Codeberg](https://codeberg.org/omakasui/omari-setup). The GitHub repository will no longer receive updates and is read-only.
+> 
+> Please visit the new location to access the latest version and updates.
 
 ## License
 

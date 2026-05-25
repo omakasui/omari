@@ -1,9 +1,0 @@
-#!/bin/bash
-
-# omari:summary=Display the Omari logo in the terminal using green color.
-
-clear
-echo -e "\033[32m"
-cat <~/.local/share/omari/logo.txt
-echo -e "\033[0m"
-echo

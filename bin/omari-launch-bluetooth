@@ -1,6 +1,0 @@
-#!/bin/bash
-
-# omari:summary=Launch the Omari bluetooth controls TUI (provided by bluetui).
-
-rfkill unblock bluetooth
-exec omari-launch-or-focus-tui bluetui

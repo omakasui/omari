@@ -1,5 +1,0 @@
-#!/bin/bash
-
-# omari:summary=Display the current Omari branding.
-
-cat $HOME/.config/omari/branding/brand

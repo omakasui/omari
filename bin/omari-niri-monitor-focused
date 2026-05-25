@@ -1,5 +1,0 @@
-#!/bin/bash
-
-# omari:summary=Print the name of the currently focused Hyprland monitor.
-
-niri msg --json focused-output | jq -r '.name'

@@ -1,6 +1,0 @@
-#!/bin/bash
-
-# omari:summary=Launch the Omari wifi controls (provided by the Impala TUI).
-
-rfkill unblock wifi
-omari-launch-or-focus-tui impala
