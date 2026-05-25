@@ -91,6 +91,7 @@ power-profiles-daemon
 printer-driver-cups-pdf
 
 qt6-svg-plugins
+qt6-wayland
 
 rfkill
 ripgrep
@@ -124,6 +125,7 @@ wtype
 
 xdg-user-dirs
 xdg-desktop-portal
+xdg-desktop-portal-gnome
 xdg-desktop-portal-gtk
 xdg-terminal-exec
 xwayland
